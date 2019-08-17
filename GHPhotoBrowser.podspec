@@ -23,7 +23,7 @@ Pod::Spec.new do |spec|
 
   spec.source       = { :git => "https://github.com/gaoguanghui/GHPhotoBrowser.git", :tag => spec.version }
 
-  spec.source_files  = "GHPhotoBrowser.{swift}"
+  spec.source_files  = "*.{swift}"
 
   spec.framework  = "UIKit"
 
