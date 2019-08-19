@@ -9,7 +9,7 @@
 Pod::Spec.new do |spec|
 
   spec.name         = "GHPhotoBrowser"
-  spec.version      = "0.0.4"
+  spec.version      = "0.0.5"
   spec.summary      = "A photo browser."
   spec.homepage     = "https://github.com/gaoguanghui/GHPhotoBrowser"
 
