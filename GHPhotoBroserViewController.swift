@@ -8,7 +8,7 @@
 
 import UIKit
 
-class GHPhotoBroserViewController: UIViewController {
+public class GHPhotoBroserViewController: UIViewController {
     private var screenWidth: CGFloat {
         return UIScreen.main.bounds.size.width
     }
