@@ -54,7 +54,7 @@ public class GHPhotoBroserViewController: UIViewController, UICollectionViewDele
         browserCollectionView.setContentOffset(CGPoint(x: targetOffset, y: 0), animated: false)
     }
     
-    //MARK: - lazy load
+    //MARK: -- lazy load
     lazy var browserCollectionView: GHBrowserCollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = UICollectionView.ScrollDirection.horizontal
@@ -89,7 +89,7 @@ public class GHPhotoBroserViewController: UIViewController, UICollectionViewDele
         return v
     }()
 
-    //MARK: - 拖动相关计算存储属性
+    //MARK: -- 拖动相关计算存储属性
     enum PanDirectionType {
         case unKnown, up, down
     }
@@ -109,11 +109,12 @@ public class GHPhotoBroserViewController: UIViewController, UICollectionViewDele
         print("=========== deinit: \(self.classForCoder)")
     }
     
+    //MARK: -- collectionView delegate/datasource
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imgAry.count
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func CollectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GHBrowserCollectionViewCellID", for: indexPath) as! GHBrowserCollectionViewCell
         cell.browserView.panDelegate = self
         cell.tapDismissClosure = {[weak self] in
@@ -232,12 +233,25 @@ extension GHPhotoBroserViewController: GHPanPhotoDelegate {
         if percent > 0.1 {
             if isCancelTransition {
                 transitionContainerView?.window?.windowLevel = UIWindow.Level.statusBar + 1
-                self.browserCollectionView.isHidden = false
-                self.moveView.isHidden = true
-                UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
-                    self.animatorCoordinator?.maskView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
-                }) { (_) in
-                    self.pageControl.isHidden = false
+                let cell = browserCollectionView.cellForItem(at: IndexPath(item: currentPage, section: 0)) as! GHBrowserCollectionViewCell
+                if cell.browserView.panDelegateEnable {
+                    self.browserCollectionView.isHidden = false
+                    self.moveView.isHidden = true
+                    UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
+                        self.animatorCoordinator?.maskView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
+                    }) { (_) in
+                        self.pageControl.isHidden = false
+                    }
+                }else{
+                    UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
+                        self.animatorCoordinator?.maskView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
+                        self.moveView.frame.size = cell.browserView.orgImgViewSize
+                        self.moveView.center = cell.browserView.orgImgViewCenter
+                    }) { (_) in
+                        self.browserCollectionView.isHidden = false
+                        self.moveView.isHidden = true
+                        self.pageControl.isHidden = false
+                    }
                 }
             }else{
                 transitionContainerView?.window?.windowLevel = UIWindow.Level(rawValue: 0)
@@ -247,12 +261,25 @@ extension GHPhotoBroserViewController: GHPanPhotoDelegate {
             }
         }else{
             transitionContainerView?.window?.windowLevel = UIWindow.Level.statusBar + 1
-            self.browserCollectionView.isHidden = false
-            self.moveView.isHidden = true
-            UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseInOut], animations: {
-                self.animatorCoordinator?.maskView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
-            }) { (_) in
-                self.pageControl.isHidden = false
+            let cell = browserCollectionView.cellForItem(at: IndexPath(item: currentPage, section: 0)) as! GHBrowserCollectionViewCell
+            if cell.browserView.panDelegateEnable {
+                self.browserCollectionView.isHidden = false
+                self.moveView.isHidden = true
+                UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
+                    self.animatorCoordinator?.maskView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
+                }) { (_) in
+                    self.pageControl.isHidden = false
+                }
+            }else{
+                UIView.animate(withDuration: 0.2, delay: 0, options: [.curveEaseOut], animations: {
+                    self.animatorCoordinator?.maskView.backgroundColor = UIColor.black.withAlphaComponent(1.0)
+                    self.moveView.frame.size = cell.browserView.orgImgViewSize
+                    self.moveView.center = cell.browserView.orgImgViewCenter
+                }) { (_) in
+                    self.browserCollectionView.isHidden = false
+                    self.moveView.isHidden = true
+                    self.pageControl.isHidden = false
+                }
             }
         }
         panDirection = .unKnown

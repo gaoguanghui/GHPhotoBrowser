@@ -17,7 +17,7 @@ class GHPhotoBrowserView: UIScrollView, UIScrollViewDelegate {
     }
 
     weak var panDelegate: GHPanPhotoDelegate?
-    private var panDelegateEnable = false
+    var panDelegateEnable = false
     //开始拖拽时是否在顶部
     private var beginDraggingIsTop = false
     //开始拖拽时是否在底部
@@ -29,7 +29,7 @@ class GHPhotoBrowserView: UIScrollView, UIScrollViewDelegate {
     var orgImgViewSize = CGSize.zero
     var orgImgViewCenter = CGPoint.zero
     
-    /// 根据图片的尺寸计算得imgView的frame, 长图模式暂未有
+    /// 根据图片的尺寸计算得imgView的frame
     ///
     /// - Parameter imageSize: image的size
     /// - Returns: 计算的imgView的frame
@@ -133,8 +133,8 @@ class GHPhotoBrowserView: UIScrollView, UIScrollViewDelegate {
             }
         case .cancelled, .ended:
             if panDelegateEnable {
-                panDelegateEnable = false
                 panDelegate?.panCancelledOfEnded()
+                panDelegateEnable = false
             }
         default:
             break
