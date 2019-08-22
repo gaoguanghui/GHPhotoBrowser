@@ -19,13 +19,13 @@ Pod::Spec.new do |spec|
 
   spec.platform     = :ios, "10.0"
 
-  spec.swift_version = '5'
+  spec.swift_version = '5.0'
 
   spec.source       = { :git => "https://github.com/gaoguanghui/GHPhotoBrowser.git", :tag => spec.version }
 
   spec.source_files  = "*.{swift}"
 
-  spec.framework  = "UIKit", "Foundation"
+  spec.framework  = "UIKit"
 
   spec.requires_arc = true  
 
