@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class GHPhotoBroserViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+public class GHPhotoBroserViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     private var screenWidth: CGFloat {
         return UIScreen.main.bounds.size.width
     }
@@ -109,13 +109,12 @@ public class GHPhotoBroserViewController: UIViewController, UICollectionViewDele
         print("=========== deinit: \(self.classForCoder)")
     }
     
-    //MARK: -- collectionView delegate/datasource
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imgAry.count
     }
     
     public func CollectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GHBrowserCollectionViewCellID", for: indexPath) as! GHBrowserCollectionViewCell
+        let cell = browserCollectionView.dequeueReusableCell(withReuseIdentifier: "GHBrowserCollectionViewCellID", for: indexPath) as! GHBrowserCollectionViewCell
         cell.browserView.panDelegate = self
         cell.tapDismissClosure = {[weak self] in
             self?.transitionContainerView?.window?.windowLevel = UIWindow.Level(rawValue: 0)
@@ -126,12 +125,7 @@ public class GHPhotoBroserViewController: UIViewController, UICollectionViewDele
         return cell
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-    }
-    
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        //        print(indexPath.item)
         let theCell = cell as! GHBrowserCollectionViewCell
         theCell.browserView.setZoomScale(1.0, animated: false)
     }
