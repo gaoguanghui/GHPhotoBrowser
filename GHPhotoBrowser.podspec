@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
 
   spec.source_files  = "*.{swift}"
 
-  spec.framework  = "UIKit"
+  spec.framework  = "UIKit", "Foundation"
 
   spec.requires_arc = true  
 
